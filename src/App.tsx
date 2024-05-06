@@ -1,6 +1,8 @@
-import { useEffect, useState } from "react";
-import { Button } from "./components/ui/button";
-import { cn } from "./lib/utils";
+import { useEffect, useState } from 'react';
+import { Button } from './components/ui/button';
+import { cn } from './lib/utils';
+import { motion } from 'framer-motion';
+
 type Word = {
   word: string;
   definition: string;
@@ -64,25 +66,25 @@ type Word = {
 const words: Word[] = [
   // 16 words divided equally in four distinct groups that make sense
   // 4 vegetables
-  { word: "Carrot", definition: "A vegetable", group: "Vegetable" },
-  { word: "Potato", definition: "A vegetable", group: "Vegetable" },
-  { word: "Tomato", definition: "A vegetable", group: "Vegetable" },
-  { word: "Onion", definition: "A vegetable", group: "Vegetable" },
+  { word: 'Carrot', definition: 'A vegetable', group: 'Vegetable' },
+  { word: 'Potato', definition: 'A vegetable', group: 'Vegetable' },
+  { word: 'Tomato', definition: 'A vegetable', group: 'Vegetable' },
+  { word: 'Onion', definition: 'A vegetable', group: 'Vegetable' },
   // 4 animals
-  { word: "Dog", definition: "An animal", group: "Animal" },
-  { word: "Cat", definition: "An animal", group: "Animal" },
-  { word: "Elephant", definition: "An animal", group: "Animal" },
-  { word: "Lion", definition: "An animal", group: "Animal" },
+  { word: 'Dog', definition: 'An animal', group: 'Animal' },
+  { word: 'Cat', definition: 'An animal', group: 'Animal' },
+  { word: 'Elephant', definition: 'An animal', group: 'Animal' },
+  { word: 'Lion', definition: 'An animal', group: 'Animal' },
   // 4 colors
-  { word: "Red", definition: "A color", group: "Color" },
-  { word: "Blue", definition: "A color", group: "Color" },
-  { word: "Green", definition: "A color", group: "Color" },
-  { word: "Yellow", definition: "A color", group: "Color" },
+  { word: 'Red', definition: 'A color', group: 'Color' },
+  { word: 'Blue', definition: 'A color', group: 'Color' },
+  { word: 'Green', definition: 'A color', group: 'Color' },
+  { word: 'Yellow', definition: 'A color', group: 'Color' },
   // 4 vehicles
-  { word: "Bus", definition: "A vehicle", group: "Vehicle" },
-  { word: "Car", definition: "A vehicle", group: "Vehicle" },
-  { word: "Bicycle", definition: "A vehicle", group: "Vehicle" },
-  { word: "Motorcycle", definition: "A vehicle", group: "Vehicle" },
+  { word: 'Bus', definition: 'A vehicle', group: 'Vehicle' },
+  { word: 'Car', definition: 'A vehicle', group: 'Vehicle' },
+  { word: 'Bicycle', definition: 'A vehicle', group: 'Vehicle' },
+  { word: 'Motorcycle', definition: 'A vehicle', group: 'Vehicle' },
 ];
 
 type CardProps = Word & {
@@ -94,18 +96,24 @@ const Card = ({ word, definition, group, select, selected }: CardProps) => {
   const handleClick = () => {
     select({ word, definition, group });
   };
+
   return (
-    <button
+    <motion.button
+      whileHover={{ scale: 1.05 }}
+      whileTap={{ scale: 0.95 }}
+      exit={{ opacity: 0 }}
+      transition={{ ease: 'easeOut', duration: 1.1 }}
+      layout
       className={cn(
-        "cursor-pointer hover:bg-gray-200 p-4 bg-gray-100 rounded-lg shadow-md flex flex-col items-center",
-        selected && "bg-indigo-200 hover:bg-indigo-300"
+        'flex cursor-pointer flex-col items-center rounded-lg bg-amber-100 p-4 shadow-md hover:bg-amber-200',
+        selected && 'bg-pink-200 hover:bg-pink-300',
       )}
       onClick={handleClick}
     >
       <h2 className="text-xl font-bold">{word}</h2>
       <p className="text-md">{definition}</p>
       <p className="text-sm text-gray-500">{group}</p>
-    </button>
+    </motion.button>
   );
 };
 
@@ -116,13 +124,13 @@ type GroupProps = {
 
 const Group = ({ name, words }: GroupProps) => {
   return (
-    <div className="bg-gray-100 p-4 rounded-lg shadow-md text-center">
+    <div className="rounded-sm bg-gray-100 p-4 text-center shadow-md">
       <h2 className="text-xl font-bold">{name}</h2>
       <p className="text-md">
         {words.map((word, index) => (
-          <span key={index} className="text-indigo-500">
+          <span key={index} className="text-white">
             {word.word}
-            {index < words.length - 1 ? ", " : ""}
+            {index < words.length - 1 ? ', ' : ''}
           </span>
         ))}
       </p>
@@ -150,11 +158,11 @@ function App() {
 
   useEffect(() => {
     if (attempts === 0) {
-      alert("You lose!");
+      alert('You lose!');
       reset();
     }
     if (groupsFound.length === 4) {
-      alert("You win!");
+      alert('You win!');
       reset();
     }
   }, [attempts, groupsFound.length]);
@@ -163,7 +171,7 @@ function App() {
     setSelected((selected) => {
       if (selected.some((selectedWord) => selectedWord.word === word.word)) {
         return selected.filter(
-          (selectedWord) => selectedWord.word !== word.word
+          (selectedWord) => selectedWord.word !== word.word,
         );
       }
       if (selected.length >= 4) {
@@ -205,8 +213,8 @@ function App() {
 
   return (
     <>
-      <div className="min-h-screen flex flex-col items-center justify-center space-y-4">
-        <h1 className="text-4xl font-bold">Q lab faz isso?</h1>
+      <div className="flex min-h-screen flex-col items-center justify-center space-y-4 bg-amber-50">
+        <h1 className="fixed top-4 text-4xl font-bold">Q lab faz isso?</h1>
         <div className="grid grid-cols-4 gap-4 sm:w-screen md:w-4/5 lg:w-3/5">
           <div className="col-span-4 space-y-4">
             {groupsFound.map((group, index) => (
@@ -217,9 +225,9 @@ function App() {
               />
             ))}
           </div>
-          {wordsLeft.map((word, index) => (
+          {wordsLeft.map((word) => (
             <Card
-              key={index}
+              key={word.word}
               {...word}
               select={select}
               selected={isSelected(word)}
@@ -229,27 +237,31 @@ function App() {
         <Attempts attempts={attempts} />
         <div className="flex gap-2">
           <Button
-            variant={"destructive"}
+            variant={'destructive'}
             className="rounded-full"
             onClick={reset}
           >
             new game
           </Button>
           <Button
-            variant={"outline"}
-            className="rounded-full"
+            variant={'outline'}
+            className="rounded-full border-amber-200 bg-amber-100 hover:bg-amber-50"
             onClick={() => setWordsLeft((w) => shuffle(w))}
           >
             shuffle
           </Button>
           <Button
-            variant={"outline"}
-            className="rounded-full"
+            variant={'outline'}
+            className="rounded-full border-amber-200 bg-amber-100 hover:bg-amber-50"
             onClick={deselectAll}
           >
             deselect all
           </Button>
-          <Button className="rounded-full" onClick={check} disabled={!canCheck}>
+          <Button
+            className="rounded-full border-amber-900 bg-amber-800 hover:bg-amber-700"
+            onClick={check}
+            disabled={!canCheck}
+          >
             check
           </Button>
         </div>
