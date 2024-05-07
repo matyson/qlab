@@ -13,3 +13,5 @@ Initially proposed as an activity for the CNPEM'S [Ciência Aberta](https://page
 - [ ] score
 - [ ] difficulty levels
 - [ ] leaderboard
+- [x] pages
+- [ ] guided tutorial
