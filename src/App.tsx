@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { Button } from './components/ui/button';
 import { cn } from './lib/utils';
 import { AnimatePresence, motion } from 'framer-motion';
+import { toast } from 'sonner';
 
 type Word = {
   word: string;
@@ -143,24 +144,29 @@ const shuffle = (w: Word[]) => {
   return [...w].sort(() => Math.random() - 0.5);
 };
 
+const useLoose = (
+  attemptsLeft: number,
+  groupsFound: string[],
+  cb: () => void,
+) => {
+  useEffect(() => {
+    const isLoosing = groupsFound.length !== 4 && attemptsLeft === 0;
+    if (isLoosing) {
+      toast.error('You loose! Try again.');
+      cb();
+    }
+    if (groupsFound.length === 4) {
+      toast.success('You win! Congratulations!');
+      cb();
+    }
+  }, [attemptsLeft, cb, groupsFound.length]);
+};
+
 function App() {
   const [attempts, setAttempts] = useState(4);
   const [selected, setSelected] = useState<Word[]>([]);
   const [wordsLeft, setWordsLeft] = useState(() => shuffle(words));
   const [groupsFound, setGroupsFound] = useState<string[]>([]);
-
-  useEffect(() => {
-    setTimeout(() => {
-      if (attempts === 0) {
-        alert('You lose!');
-        reset();
-      }
-      if (groupsFound.length === 4) {
-        alert('You win!');
-        reset();
-      }
-    }, 0);
-  }, [attempts, groupsFound.length]);
 
   const select = (word: Word) => {
     setSelected((selected) => {
@@ -197,6 +203,8 @@ function App() {
     setWordsLeft(shuffle(words));
     setGroupsFound([]);
   };
+
+  useLoose(attempts, groupsFound, reset);
 
   const isSelected = (word: Word) => {
     return selected.some((selectedWord) => selectedWord.word === word.word);
