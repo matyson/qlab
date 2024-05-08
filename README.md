@@ -15,3 +15,4 @@ Initially proposed as an activity for the CNPEM'S [Ciência Aberta](https://page
 - [ ] leaderboard
 - [x] pages
 - [ ] guided tutorial
+- [ ] mobile work
