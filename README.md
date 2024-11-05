@@ -1,4 +1,4 @@
-# Q lab faz isso??
+# Q lab faz isso?
 
 Word grouping game inspired by [Nyt Connections](https://www.nytimes.com/games/connections).
 Words' groups are related to [CNPEM's](https://cnpem.br) laboratories and facilities.
